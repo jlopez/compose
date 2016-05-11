@@ -10,7 +10,12 @@ services:
           - forward_facing
           - ahead
       back:
+      external:
+        name_alias: false
+        aliases:
+          - web100
 
 networks:
   front: {}
   back: {}
+  external: {}

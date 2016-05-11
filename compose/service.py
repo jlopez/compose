@@ -537,11 +537,12 @@ class Service(object):
         if container and container.labels.get(LABEL_ONE_OFF) == "True":
             return []
 
-        return list(
-            {self.name} |
-            ({container.short_id} if container else set()) |
-            set(network.get('aliases', ()))
-        )
+        aliases = set(network.get('aliases', ()))
+        if network.get('name_alias', True):
+            aliases.add(self.name)
+        if container:
+            aliases.add(container.short_id)
+        return list(aliases)
 
     def build_default_networking_config(self):
         if not self.networks:

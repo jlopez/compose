@@ -153,6 +153,7 @@
                       "type": "object",
                       "properties": {
                         "aliases": {"$ref": "#/definitions/list_of_strings"},
+                        "name_alias": { "type": "boolean" },
                         "ipv4_address": {"type": "string"},
                         "ipv6_address": {"type": "string"}
                       },

@@ -514,14 +514,16 @@ class CLITestCase(DockerClientTestCase):
         self.dispatch(['-f', filename, 'up', '-d'], None)
         back_name = '{}_back'.format(self.project.name)
         front_name = '{}_front'.format(self.project.name)
+        external_name = '{}_external'.format(self.project.name)
 
         networks = [
             n for n in self.client.networks()
             if n['Name'].startswith('{}_'.format(self.project.name))
         ]
 
-        # Two networks were created: back and front
-        assert sorted(n['Name'] for n in networks) == [back_name, front_name]
+        # Three networks were created: back, external and front
+        assert sorted(n['Name'] for n in networks) == [back_name,
+                                                       external_name, front_name]
         web_container = self.project.get_service('web').containers()[0]
 
         back_aliases = web_container.get(
@@ -534,6 +536,11 @@ class CLITestCase(DockerClientTestCase):
         assert 'web' in front_aliases
         assert 'forward_facing' in front_aliases
         assert 'ahead' in front_aliases
+        external_aliases = web_container.get(
+            'NetworkSettings.Networks.{}.Aliases'.format(external_name)
+        )
+        assert 'web' not in external_aliases
+        assert 'web100' in external_aliases
 
     @v2_only()
     def test_up_with_network_static_addresses(self):
