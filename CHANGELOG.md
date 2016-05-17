@@ -1,6 +1,15 @@
 Change log
 ==========
 
+1.7.2a1 (2016-05-17)
+-----------------
+
+New Features
+
+- Add service network name_alias boolean property. When set to false,
+  the default name alias is not automatically created.
+
+
 1.7.1 (2016-05-04)
 -----------------
 
